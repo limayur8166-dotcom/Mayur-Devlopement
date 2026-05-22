@@ -35,5 +35,5 @@ jobs:
 
           ${{ job.status == 'success' && 'Deployment completed successfully.' || 'Deployment failed. Please check logs.' }}
 
-        to: limayur8166@gmail.com
+        to: instanceimayur@gmail.com
         from: GitHub Actions
