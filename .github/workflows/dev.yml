@@ -1,0 +1,39 @@
+name: Send Email Only
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send Email
+      uses: dawidd6/action-send-mail@v3
+      if: always()
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        secure: true
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+
+        subject: >
+          ${{ job.status == 'success' && '✅ SUCCESS' || '❌ FAILED' }} - GitHub Deployment
+
+        body: |
+          Hello,
+
+          Your GitHub workflow has completed.
+
+          🔹 Status   : ${{ job.status }}
+          🔹 Repository: ${{ github.repository }}
+          🔹 Branch    : ${{ github.ref_name }}
+          🔹 Commit    : ${{ github.sha }}
+          🔹 Pushed by : ${{ github.actor }}
+
+          ${{ job.status == 'success' && 'Deployment completed successfully.' || 'Deployment failed. Please check logs.' }}
+
+        to: limayur8166@gmail.com
+        from: GitHub Actions
